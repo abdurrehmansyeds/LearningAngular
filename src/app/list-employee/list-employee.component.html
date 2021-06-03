@@ -1,0 +1,7 @@
+<app-create-employee [departments]="departments" (departmentEventEmitter)="addNewDepartment
+($event)"></app-create-employee>
+
+<p>This is parents list</p>
+<ul>
+    <li *ngFor="let department of departments">{{department}}</li>
+</ul>
