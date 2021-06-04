@@ -1,4 +1,7 @@
+import { EmployeeService } from './../services/employee.service';
+import { IEmployee } from './../create-employee/model/IEmployee';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-employee',
@@ -7,13 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListEmployeeComponent implements OnInit {
 
-  departments = ['IT','Finance']
-  constructor() { }
+  employees:IEmployee[];
+  constructor(private employeeService:EmployeeService,private router:Router) { }
 
   ngOnInit() {
+    this.employeeService.getEmployees().subscribe(
+      (listEmployees)=>this.employees=listEmployees,
+      (err)=>console.log(err)
+      
+    )
   }
 
-  addNewDepartment(value:string){
-    this.departments.push(value);
+  editEmployeeClick(id:number){
+    this.router.navigate(['employees/edit/',id]);
   }
 }

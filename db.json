@@ -1,0 +1,51 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "fullName": "Mark ",
+      "contactPreference": "email",
+      "phone": "123456",
+      "email": "xyz@avaali.com",
+      "skills": [
+        {
+          "skillName": "c#",
+          "experienceInYears": "2",
+          "proficiency": "beginner"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "fullName": "John",
+      "contactPreference": "email",
+      "phone": "123456",
+      "email": "xyz@avaali.com",
+      "skills": [
+        {
+          "skillName": "c#",
+          "experienceInYears": "2",
+          "proficiency": "beginner"
+        },
+        {
+          "skillName": "java",
+          "experienceInYears": "4",
+          "proficiency": "advance"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "fullName": "Frank",
+      "phone": "34325325",
+      "contactPreference": "email",
+      "email": "abc@avaali.com",
+      "skills": [
+        {
+          "skillName": "Java",
+          "experienceInYears": "2",
+          "proficiency": "intermediate"
+        }
+      ]
+    }
+  ]
+}

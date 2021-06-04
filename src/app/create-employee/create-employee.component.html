@@ -1,7 +1,7 @@
 <form [formGroup]="employeeGroup" (ngSubmit)="onSubmit()" class="form-horizontal">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title"> Create Employee</h3>
+            <h3 class="panel-title">{{pageTitle}}</h3>
         </div>
         <div class="panel-body">
 
@@ -61,44 +61,75 @@
                 </div>
             </div>
 
-
-            <div formGroupName="skills">
-                <div class="form-group"
-                    [ngClass]="{'has-error' : formErrors.skillName || formErrors.experienceInYears}">
-                    <label class="col-md-2 control-label" for="skillName">Skill</label>
-                    <div class="col-sm-4">
-                        <input type="text" formControlName="skillName" placeholder="Name"
-                            (blur)="logValidationErrors()">
-                        <span class="help-block" *ngIf="formErrors.skillName">
-                            {{formErrors.skillName}}
-                        </span>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" formControlName="experienceInYears" placeholder="Experience in years"
-                            (blur)="logValidationErrors()">
-                        <span class="help-block" *ngIf="formErrors.experienceInYears">
-                            {{formErrors.experienceInYears}}
-                        </span>
+            <div class="well">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-4">
+                        <button type="button" class="btn btn-primary"
+                         (click)="addSkillButtonClick()" [disabled]="employeeGroup.get('skills').invalid">
+                            Add Skill
+                        </button>
                     </div>
                 </div>
-                <div class="form-group" [ngClass]="{'has-error' : formErrors.proficiency}">
-                    <label class="col-md-2 control-label">Proficiency</label>
-                    <div class="col-md-8">
-                        <label class="radio-inline">
-                            <input type="radio" value="beginner" formControlName="proficiency"
-                                (blur)="logValidationErrors()">Beginner
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" value="intermediate" formControlName="proficiency"
-                                (blur)="logValidationErrors()">Intermediate
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" value="advance" formControlName="proficiency"
-                                (blur)="logValidationErrors()">Advance
-                        </label>
-                        <span class="help-block" *ngIf="formErrors.proficiency">
-                            {{formErrors.proficiency}}
-                        </span>
+
+                <div formArrayName="skills" *ngFor="let skill of employeeGroup.get('skills').controls; let i = index">
+                    <div [formGroupName]="i">
+                        <hr *ngIf="i>0  ">
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : skill.get('skillName').invalid && 
+                                                      skill.get('skillName').touched}">
+                            <label class="col-md-2 control-label" [attr.for]="'skillName'+i">Skill</label>
+                            <div class="col-sm-4">
+                                <input  class="form-control" type="text" formControlName="skillName" 
+                                placeholder="C# Java" [id]="'skillName'+i">
+                                <span class="help-block" *ngIf="skill.get('skillName').errors?.required && 
+                                                                skill.get('skillName').touched">
+                                    Skill Name is required
+                                </span>
+                            </div>
+                            <div class="col-sm-6" *ngIf="employeeGroup.get('skills').length>1">
+                                <button type="button" title="Delete Skill" class="btn btn-danger btn-sm pull-right"
+                                (click)="removeSkillButtonClick(i)">
+                                    <span class="glyphicon glyphicon-remove" ></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group"
+                            [ngClass]="{'has-error' : skill.get('experienceInYears').invalid && 
+                                                      skill.get('experienceInYears').touched}">
+                            <label class="col-md-2 control-label" [attr.for]="'experienceInYears'+i">Experience</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" type="text" formControlName="experienceInYears"
+                                 placeholder="Experience in years"[id]="'experienceInYears'+i">
+                                <span class="help-block" *ngIf="skill.get('experienceInYears').errors?.required && 
+                                                                skill.get('experienceInYears').touched">
+                                    Experience is required
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" [ngClass]="{'has-error' :  skill.get('proficiency').invalid && 
+                                                                           skill.get('proficiency').touched}">
+                            <label class="col-md-2 control-label">Proficiency</label>
+                            <div class="col-md-8">
+                                <label class="radio-inline">
+                                    <input type="radio" value="beginner" formControlName="proficiency">Beginner
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="intermediate" formControlName="proficiency"
+                                       >Intermediate
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="advance" formControlName="proficiency"
+                                        >Advance
+                                </label>
+                                <span class="help-block" *ngIf="skill.get('proficiency').errors?.reqiured && 
+                                skill.get('proficiency').touched">
+                                    Proficiency is reqiured
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,7 +137,7 @@
 
             <div class="panel-footer">
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary" type="submit"> Save</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="employeeGroup.invalid"> Save</button>
                     <button class="btn btn-primary" type="button" (click)="onLoadFormData()"> Load Data</button>
                 </div>
 
@@ -116,12 +147,3 @@
         </div>
     </div>
 </form>
-
-<p>This is childs departments list coming from parent component</p>
-<ul>
-    <li *ngFor="let department of departments">{{department}}</li>
-</ul>
-
-<label for="item-input">Add an item:</label>
-<input type="text" id="item-input" #newItem>
-<button (click)="addNewDepartment(newItem.value)">Add to parent's list</button>
