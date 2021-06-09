@@ -164,12 +164,12 @@ export class CreateEmployeeComponent implements OnInit {
     this.mapValuesForCurrentEmp();
     if (this.currentEmployee.id) {
       this.employeeService.updateEmployee(this.currentEmployee).subscribe(
-        () => this.router.navigate(['list']),
+        () => this.router.navigate(['employees']),
         (err) => console.log(err)
       )
     } else {
       this.employeeService.addEmployee(this.currentEmployee).subscribe(
-        () => this.router.navigate(['list']),
+        () => this.router.navigate(['employees']),
         (err) => console.log(err)
       )
     }
